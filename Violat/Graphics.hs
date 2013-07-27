@@ -36,10 +36,10 @@ colorToPixel color = runJustT $ do
           RGBA r g b a -> SDL.mapRGBA format (w r) (w g) (w b) (w a)
         w = colorDoubleToWord8
 
-onScreen :: BASE => (SDL.Surface -> GameState m a b) -> GameState m a b
-onScreen f = runJustT $ do
+onScreen1 :: BASE => (SDL.Surface -> GameState m a b) -> GameState m a b
+onScreen1 f = runJustT $ do
   surf <- MaybeT $ getv screenSurf
   justT $ f surf
 
-onScreen1 :: BASE => (SDL.Surface -> GameState m a b) -> GameState m a ()
-onScreen1 = (>> return ()) . onScreen
+onScreen :: BASE => (SDL.Surface -> GameState m a b) -> GameState m a ()
+onScreen = (>> return ()) . onScreen1

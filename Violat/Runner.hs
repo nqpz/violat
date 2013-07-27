@@ -35,6 +35,7 @@ emptyGame a = Game { _gameSettings = a
                    , _currentFPS = 0
                    , _timeAction = Nothing
                    , _newTimeStart = 0
+                   , _prevDelay = 0
                    , _frameNumber = 0
                    , _eventAction = Nothing
                    , _stepAction = Nothing
@@ -56,7 +57,7 @@ exit :: BASE => GameState m a ()
 exit = setv keepRunning False
 
 stepAct :: BASE => StepActor m a
-stepAct fn = getv stepAction >>>= ($ fn)
+stepAct tDiff = getv stepAction >>>= ($ tDiff)
 
 timeAct :: BASE => TimeActor m a
 timeAct t0 t1 = getv timeAction >>>= (\f -> f t0 t1)
@@ -76,37 +77,40 @@ playGame = do
     SDL.setVideoMode width height 32 []
     SDL.setCaption title title
   setv screenSurf =<< liftM Just (liftIO SDL.getVideoSurface)
-  setv gameStartTime =<< liftIO SDL.getTicks
+  setv gameStartTime =<< liftIO getTicks
   gameLoop
   liftIO SDL.quit
 
 gameLoop :: BASE => GameState m a ()
 gameLoop = do
-  stepAct =<< getv frameNumber
-  modv frameNumber (+1)
-
-  t0 <- getv newTimeStart
   startTime <- getv gameStartTime
-  t1 <- liftM (\n -> fromIntegral n - startTime) $ liftIO SDL.getTicks
-  timeAct t0 t1
+  t1 <- liftM (\n -> n - startTime) $ liftIO getTicks
+  t0 <- getv newTimeStart
   setv newTimeStart t1
+  let tDiff = (t1 - t0)
+  setv currentFPS (1000 % (if tDiff == 0 then 1 else tDiff))
+
+  eventAct =<< liftIO SDL.pollEvent
+  
+  stepAct tDiff
+
+  timeAct t0 t1
 
   still <- getv keepRunning
   if still then do
-    let denom = (t1 - t0)
-    setv currentFPS (1000 % (if denom == 0 then 1 else denom))
-    liftIO . threadDelay =<<< calculateDelay (t1 - t0)
-
-    eventAct =<< liftIO SDL.pollEvent
-
     drawAct
-
     liftIO . SDL.flip =<<< getv screenSurf
 
+    prevD <- getv prevDelay
+    calculateDelay (tDiff - prevD) >>>= \d -> do
+      liftIO $ threadDelay (d * 1000)
+      setv prevDelay d
+
+    modv frameNumber (+1)
     gameLoop
 
     else return ()
 
 calculateDelay :: BASE => Time -> GameState m a (Maybe Int)
 calculateDelay diff = getv gameFPSTarget >><= \fps -> do
-  return $ clamp $ fromIntegral $ round (1000 / fps - fromIntegral diff)
+  return $ clamp $ round (1000 / fps - fromIntegral diff)

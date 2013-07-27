@@ -30,9 +30,9 @@ import qualified Graphics.UI.SDL as SDL
 type Action m a = GameState m a ()
 type TimeActor m a = Time -> Time -> Action m a
 type EventActor m a = SDL.Event -> Action m a
-type StepActor m a = Int -> Action m a
+type StepActor m a = Time -> Action m a
 type DrawActor m a = Action m a
-type Time = Word32 -- milliseconds
+type Time = Int -- milliseconds
 
 type GameState m a r = StateT (Game m a) m r
 
@@ -42,6 +42,7 @@ data Game m a = Game { _gameSettings :: a
                      , _currentFPS :: Ratio Time
                      , _timeAction :: Maybe (TimeActor m a)
                      , _newTimeStart :: Time
+                     , _prevDelay :: Time
                      , _frameNumber :: Int
                      , _eventAction :: Maybe (EventActor m a)
                      , _stepAction :: Maybe (StepActor m a)
@@ -59,3 +60,5 @@ data Color = RGBA { r :: Double
                   , a :: Double
                   }
            deriving (Show, Read, Eq, Ord)
+
+type Point = (Double, Double)

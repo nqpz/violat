@@ -27,6 +27,8 @@ import Data.Maybe
 
 import Violat.Types
 
+getTicks :: IO Int
+getTicks = liftM fromIntegral SDL.getTicks
 
 getv :: BASE => (Game m a L.:-> b) -> GameState m a b
 getv x = return . L.get x =<< get
@@ -65,11 +67,14 @@ clamp n | n < 0 = 0
         | otherwise = n
 
 timeActorSimple :: BASE => Int -> (Int -> Action m a) -> TimeActor m a
-timeActorSimple often action t0 t1 = mapM_ (action . fromIntegral) times
-  where times = filter (\t -> t `rem` fromIntegral often == 0) [t0 + 1..t1]
+timeActorSimple often action t0 t1 = mapM_ action times
+  where times = filter (\t -> t `rem` often == 0) [t0 + 1..t1]
 
 multiTimeActors :: BASE => [TimeActor m a] -> TimeActor m a
 multiTimeActors actors t0 t1 = mapM_ (\a -> a t0 t1) actors
+
+multiStepActors :: BASE => [StepActor m a] -> StepActor m a
+multiStepActors actors tDiff = mapM_ ($ tDiff) actors
 
 formatRatio :: (Integral a, Show a) => Int -> Ratio a -> String
 formatRatio n r = show a ++ rest
