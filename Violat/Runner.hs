@@ -81,8 +81,24 @@ playGame = do
   gameLoop
   liftIO SDL.quit
 
+takeWhileM :: Monad m => (a -> Bool) -> [m a] -> m [a]
+takeWhileM cond (x : xs) = do
+  y <- x
+  if cond y
+    then do
+    rest <- takeWhileM cond xs
+    return (y : rest)
+    else do
+    return []
+
+pollEvents :: IO [SDL.Event]
+pollEvents = takeWhileM (/= SDL.NoEvent) $ repeat SDL.pollEvent
+
 gameLoop :: BASE => GameState m a ()
 gameLoop = do
+  events <- liftIO pollEvents
+  mapM_ eventAct events
+  
   startTime <- getv gameStartTime
   t1 <- liftM (\n -> n - startTime) $ liftIO getTicks
   t0 <- getv newTimeStart
@@ -90,8 +106,6 @@ gameLoop = do
   let tDiff = (t1 - t0)
   setv currentFPS (1000 % (if tDiff == 0 then 1 else tDiff))
 
-  eventAct =<< liftIO SDL.pollEvent
-  
   stepAct tDiff
 
   timeAct t0 t1
