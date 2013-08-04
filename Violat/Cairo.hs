@@ -47,13 +47,16 @@ setSourceColor :: Color -> Cairo.Render ()
 setSourceColor (RGBA r g b a) = Cairo.setSourceRGBA r g b a
 
 lineToPoint :: Point -> Cairo.Render ()
-lineToPoint (x, y) = Cairo.lineTo x y
+lineToPoint = uncurry Cairo.lineTo
 
 relLineToPoint :: Point -> Cairo.Render ()
-relLineToPoint (x, y) = Cairo.relLineTo x y
+relLineToPoint = uncurry Cairo.relLineTo
 
 moveToPoint :: Point -> Cairo.Render ()
-moveToPoint (x, y) = Cairo.moveTo x y
+moveToPoint = uncurry Cairo.moveTo
 
 relMoveToPoint :: Point -> Cairo.Render ()
-relMoveToPoint (x, y) = Cairo.relMoveTo x y
+relMoveToPoint = uncurry Cairo.relMoveTo
+
+translatePoint :: Point -> Cairo.Render ()
+translatePoint = uncurry Cairo.translate

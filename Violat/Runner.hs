@@ -74,7 +74,7 @@ playGame = do
   title <- getv windowTitle
   liftIO $ do
     SDL.init [SDL.InitEverything]
-    SDL.setVideoMode width height 32 []
+    SDL.setVideoMode width height 32 [SDL.DoubleBuf]
     SDL.setCaption title title
   setv screenSurf =<< liftM Just (liftIO SDL.getVideoSurface)
   setv gameStartTime =<< liftIO getTicks
