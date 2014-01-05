@@ -39,7 +39,6 @@ emptyGame a = Game { _gameSettings = a
                    , _frameNumber = 0
                    , _eventAction = Nothing
                    , _stepAction = Nothing
-                   , _drawAction = Nothing
                    , _windowResolution = (0, 0)
                    , _windowTitle = ""
                    , _screenSurf = Nothing
@@ -61,9 +60,6 @@ stepAct tDiff = getv stepAction >>>= ($ tDiff)
 
 timeAct :: BASE => TimeActor m a
 timeAct t0 t1 = getv timeAction >>>= (\f -> f t0 t1)
-
-drawAct :: BASE => DrawActor m a
-drawAct = getv drawAction >>>= id
 
 eventAct :: BASE => EventActor m a
 eventAct ev = getv eventAction >>>= ($ ev)
@@ -112,7 +108,6 @@ gameLoop = do
 
   still <- getv keepRunning
   if still then do
-    drawAct
     liftIO . SDL.flip =<<< getv screenSurf
 
     prevD <- getv prevDelay

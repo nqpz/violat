@@ -31,7 +31,6 @@ type Action m a = GameState m a ()
 type TimeActor m a = Time -> Time -> Action m a
 type EventActor m a = SDL.Event -> Action m a
 type StepActor m a = Time -> Action m a
-type DrawActor m a = Action m a
 type Time = Int -- milliseconds
 
 type GameState m a r = StateT (Game m a) m r
@@ -46,7 +45,6 @@ data Game m a = Game { _gameSettings :: a
                      , _frameNumber :: Int
                      , _eventAction :: Maybe (EventActor m a)
                      , _stepAction :: Maybe (StepActor m a)
-                     , _drawAction :: Maybe (DrawActor m a)
                      , _windowResolution :: (Int, Int)
                      , _windowTitle :: String
                      , _screenSurf :: Maybe SDL.Surface
