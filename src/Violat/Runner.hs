@@ -22,7 +22,7 @@ import Control.Concurrent (threadDelay)
 import Control.Monad.State
 import qualified Graphics.UI.SDL as SDL
 import Data.Ratio
-import Control.Monad.Maybe
+import Control.Monad.Trans.Maybe
 
 import Violat.Types
 import Violat.Helpers
@@ -63,7 +63,7 @@ timeAct t0 t1 = getv timeAction >>>= (\f -> f t0 t1)
 
 eventAct :: BASE => EventActor m a
 eventAct ev = getv eventAction >>>= ($ ev)
-  
+
 playGame :: BASE => GameState m a ()
 playGame = do
   (width, height) <- getv windowResolution
@@ -94,7 +94,7 @@ gameLoop :: BASE => GameState m a ()
 gameLoop = do
   events <- liftIO pollEvents
   mapM_ eventAct events
-  
+
   startTime <- getv gameStartTime
   t1 <- liftM (\n -> n - startTime) $ liftIO getTicks
   t0 <- getv newTimeStart

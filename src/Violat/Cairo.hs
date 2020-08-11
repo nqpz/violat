@@ -21,7 +21,7 @@ import Control.Monad.State
 import qualified Graphics.UI.SDL as SDL
 import qualified Graphics.Rendering.Cairo as Cairo
 import Data.Ratio
-import Control.Monad.Maybe
+import Control.Monad.Trans.Maybe
 import Data.Maybe
 import Foreign.Ptr (castPtr)
 

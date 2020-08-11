@@ -1,0 +1,100 @@
+cabal-version: 2.2
+
+-- This file has been generated from package.yaml by hpack version 0.34.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 44cf81676392d710428e2ea14d6488d6b571b9f51baec782769e385e51846a43
+
+name:           violat
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/nqpz/violat#readme>
+homepage:       https://github.com/nqpz/violat#readme
+bug-reports:    https://github.com/nqpz/violat/issues
+author:         Niels G. W. Serup
+maintainer:     ngws@metanohi.name
+copyright:      2013, 2014, 2020 Niels G. W. Serup
+license:        WTFPL
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/nqpz/violat
+
+library
+  exposed-modules:
+      BadRacing.Constants
+      BadRacing.Event
+      BadRacing.Graphics
+      BadRacing.Helpers
+      BadRacing.Logic
+      BadRacing.Main
+      BadRacing.Math
+      BadRacing.ObjectSet
+      BadRacing.Primitives
+      BadRacing.Runner
+      BadRacing.Types
+      CommandLie.Parser
+      Violat.Cairo
+      Violat.Color
+      Violat.Graphics
+      Violat.Helpers
+      Violat.Random
+      Violat.Runner
+      Violat.SDL
+      Violat.Types
+  other-modules:
+      Paths_violat
+  hs-source-dirs:
+      src
+  build-depends:
+      MonadRandom
+    , SDL
+    , SDL-gfx
+    , SDL-image
+    , SDL-mixer
+    , SDL-ttf
+    , base >=4.7 && <5
+    , cairo
+    , colour
+    , containers
+    , diagrams
+    , fclabels
+    , mtl
+    , random-extras
+    , random-fu
+    , random-shuffle
+    , safe
+    , transformers
+  default-language: Haskell2010
+
+executable violat-badracing
+  main-is: Main.hs
+  other-modules:
+      Paths_violat
+  hs-source-dirs:
+      app/badracing
+  build-depends:
+      MonadRandom
+    , SDL
+    , SDL-gfx
+    , SDL-image
+    , SDL-mixer
+    , SDL-ttf
+    , base >=4.7 && <5
+    , cairo
+    , colour
+    , containers
+    , diagrams
+    , fclabels
+    , mtl
+    , random-extras
+    , random-fu
+    , random-shuffle
+    , safe
+    , transformers
+    , violat
+  default-language: Haskell2010

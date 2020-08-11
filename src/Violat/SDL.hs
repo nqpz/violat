@@ -22,7 +22,7 @@ import qualified Graphics.UI.SDL as SDL
 import qualified Graphics.UI.SDL.Primitives as SDL
 import qualified Graphics.UI.SDL.Rotozoomer as SDL
 import Data.Ratio
-import Control.Monad.Maybe
+import Control.Monad.Trans.Maybe
 import Data.Maybe
 
 import Violat.Types
@@ -36,8 +36,8 @@ fillRect r c s = liftIO . SDL.fillRect s r =<< colorToPixel c
 pixel x y c s = liftIO . SDL.pixel s (i x) (i y) =<< colorToPixel c
 hLine x1 x2 y c s = liftIO . SDL.hLine s (i x1) (i x2) (i y) =<< colorToPixel c
 vLine x y1 y2 c s = liftIO . SDL.vLine s (i x) (i y1) (i y2) =<< colorToPixel c
-rectangle r c s = liftIO . SDL.rectangle s r =<< colorToPixel c
-box r c s = liftIO . SDL.box s r =<< colorToPixel c
+-- rectangle r c s = liftIO . SDL.rectangle s r =<< colorToPixel c
+-- box r c s = liftIO . SDL.box s r =<< colorToPixel c
 line x y x' y' c s = liftIO . SDL.line s (i x) (i y) (i x') (i y') =<< colorToPixel c
 aaLine x y x' y' c s = liftIO . SDL.aaLine s (i x) (i y) (i x') (i y') =<< colorToPixel c
 circle x y r c s = liftIO . SDL.circle s (i x) (i y) (i r) =<< colorToPixel c

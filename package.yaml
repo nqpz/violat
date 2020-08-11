@@ -1,0 +1,42 @@
+name:                violat
+version:             0.1.0.0
+github:              "nqpz/violat"
+license:             WTFPL
+author:              "Niels G. W. Serup"
+maintainer:          "ngws@metanohi.name"
+copyright:           "2013, 2014, 2020 Niels G. W. Serup"
+
+extra-source-files:
+- README.md
+
+description:         Please see the README on GitHub at <https://github.com/nqpz/violat#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+- mtl
+- containers
+- safe
+- MonadRandom
+- random-fu
+- random-extras
+- random-shuffle
+- SDL
+- SDL-gfx
+- SDL-image
+- SDL-ttf
+- SDL-mixer
+- cairo
+- colour
+- diagrams
+- fclabels
+- transformers
+
+library:
+  source-dirs: src
+
+executables:
+  violat-badracing:
+    main:                Main.hs
+    source-dirs:         app/badracing
+    dependencies:
+    - violat

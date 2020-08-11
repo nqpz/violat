@@ -20,7 +20,7 @@ import qualified Data.Label as L
 import Control.Monad.State
 import qualified Graphics.UI.SDL as SDL
 import Data.Ratio
-import Control.Monad.Maybe
+import Control.Monad.Trans.Maybe
 import Data.Maybe
 
 import Violat.Types
