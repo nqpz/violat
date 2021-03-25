@@ -11,4 +11,4 @@ extra-deps:
 - gtk2hs-buildtools-0.13.8.0@sha256:132f38155fc677430a47ea750918973161c876fb6f281d342ac2f07eb99229ce,5238
 
 nix:
-  packages: [pkgconfig, SDL, SDL_gfx, SDL_ttf, SDL_mixer, SDL_image, cairo, zlib]
+  shell-file: default.nix
