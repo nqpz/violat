@@ -11,4 +11,5 @@ haskell.lib.buildStackProject {
   name = "violat";
   buildInputs = with pkgs_ghc865; [ pkgconfig SDL SDL_gfx SDL_ttf SDL_mixer SDL_image cairo zlib ];
   ghc = pkgs_ghc865.haskell.compiler.ghc865;
+  src = ./.;
 }
